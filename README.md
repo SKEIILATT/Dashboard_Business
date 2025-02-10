@@ -1,2 +1,7 @@
 # Dashboard_Business
-A system that allows a company to analyze employee, sales and customer data from a MySQL database and generate reports in Pandas.
+Objectives of the project:
+✅ Read data from MySQL with Pandas.
+✅ Generate sales, productivity and customer reports.
+✅ Export reports in CSV or Excel.
+✅ Visualize data in graphs (matplotlib).
+✅ Automate trend analysis and alerts.
