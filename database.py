@@ -5,13 +5,14 @@ import mysql.connector as msc
 #CONNECT DATABASE
 def connect_database():
     credentials = get_credentials()
-    connection = msc.connect(
-        host = credentials["MYSQL_HOST"],
-        user = credentials["MYSQL_USER"],
-        password = credentials["MYSQL_PASSWORD"],
-        database = credentials["MYSQL_DATABASE"]
-    )
-    return connection
+    try:
+        connection = msc.connect(
+            host = credentials["MYSQL_HOST"],
+            user = credentials["MYSQL_USER"],
+            password = credentials["MYSQL_PASSWORD"],
+            database = credentials["MYSQL_DATABASE"]
+        )
+        return connection 
+    except msc.Error as e:
+        print(f"Could not connect to the database, try again: {e}")
 
-#GENERATE DATAFRAMES
-print(connect_database())

@@ -11,6 +11,7 @@ def get_credentials():
         "MYSQL_USER": user,
         "MYSQL_PASSWORD": password,
         "MYSQL_HOST": host,
-        "MYSQL_DATABASE": database,
+        "MYSQL_DATABASE": database
     }
     return dict_credentials
+
