@@ -4,4 +4,3 @@ Objectives of the project:
 ✅ Generate sales, productivity and customer reports.
 ✅ Export reports in CSV or Excel.
 ✅ Visualize data in graphs (matplotlib).
-✅ Automate trend analysis and alerts.

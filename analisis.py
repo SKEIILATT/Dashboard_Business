@@ -38,7 +38,40 @@ def analysis_sales_per_month(year):
     sales_per_mes = sales_per_mes.reset_index()
     sales_per_mes.columns = ["Month","Total Price Sales"]
     sales_per_mes["Month"] = sales_per_mes["Month"].map(lambda x: c.month_name[x])
-    print(sales_per_mes)
+    return sales_per_mes
+
+def employee_with_more_sales(year):
+    query_sales = generate_querys("SELECT e.first_name,s.price,s.date_of_sale FROM sales s JOIN employee e ON e.id_employee = s.id_employee")
+    df_employeesales = generate_dataframes(query_sales,["Employee","Price","Date"])
+    #Filter the data
+    df_employeesales["Date"] = pd.to_datetime(df_employeesales["Date"])
+    df_employeesales["Price"] = pd.to_numeric(df_employeesales["Price"])
+    ## Verification the year
+    df_filter = df_employeesales[df_employeesales["Date"].dt.year == year]
+    
+    employee_with_more_sales = df_filter.groupby("Employee")["Price"].sum()
+    #convert to df
+    employee_with_more_sales = employee_with_more_sales.reset_index()
+    employee_with_more_sales.columns = ["Employee", "Total Price"]
+    employee_with_more_sales.sort_values(by="Total Price", ascending=False)
+    return employee_with_more_sales
+
+
+def best_selling_product(year):
+    query_result = generate_querys("SELECT product, quantity, date_of_sale FROM sales")
+    df_best_product = generate_dataframes(query_result, ["Product","Quantity","Date"])
+    df_best_product["Date"] = pd.to_datetime(df_best_product["Date"])
+    df_filter_products = df_best_product[df_best_product["Date"].dt.year==year]
+    best_selling_product = df_filter_products.groupby("Product")["Quantity"].sum()
+    best_selling_product = best_selling_product.reset_index()
+    best_selling_product.columns = ["Product","Quantity"]
+    best_selling_product.sort_values(by = "Quantity", ascending = False)
+    return best_selling_product
+
+
+
+
+
 
 
 
