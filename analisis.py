@@ -1,17 +1,23 @@
-from database import connect_database
 import pandas as pd
 import calendar as c
+from database import connection
+import mysql.connector as msc
 #Function for generate querys 
+
 def generate_querys(consult):
-    connection = connect_database()
-    if (connection):
+    global connection
+    if not connection or not connection.is_connected():
+        print("No active database connection. Please connect first.")
+        return None
+    try:
         cursor = connection.cursor()
         cursor.execute(consult)
         result = cursor.fetchall()
         cursor.close()
-        connection.close()
         return result
-    else:
+    except msc.Error as e:
+        print(f"Error executing query: {e}")
+        return None
         print("The consultation failed")
 
 #Function for generate dataframes based on of querys results
@@ -24,6 +30,7 @@ def generate_dataframes(query, list_columnas):
 #Function for the analysis of total sales per month
 
 def analysis_sales_per_month(year):
+    global connection
     query_sales = generate_querys("SELECT date_of_sale,price FROM sales")
     df_sales = generate_dataframes(query_sales, ["Date", "Price"])
     #Convert the date of sale to date and price to float
@@ -41,6 +48,7 @@ def analysis_sales_per_month(year):
     return sales_per_mes
 
 def employee_with_more_sales(year):
+    global connection
     query_sales = generate_querys("SELECT e.first_name,s.price,s.date_of_sale FROM sales s JOIN employee e ON e.id_employee = s.id_employee")
     df_employeesales = generate_dataframes(query_sales,["Employee","Price","Date"])
     #Filter the data
@@ -58,6 +66,7 @@ def employee_with_more_sales(year):
 
 
 def best_selling_product(year):
+    global connection
     query_result = generate_querys("SELECT product, quantity, date_of_sale FROM sales")
     df_best_product = generate_dataframes(query_result, ["Product","Quantity","Date"])
     df_best_product["Date"] = pd.to_datetime(df_best_product["Date"])
