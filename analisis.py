@@ -2,6 +2,7 @@ import pandas as pd
 import calendar as c
 from database import connect_database
 import mysql.connector as msc
+
 #Function for generate querys 
 
 def generate_querys(connection,consult):
